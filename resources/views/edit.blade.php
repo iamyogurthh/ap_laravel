@@ -32,6 +32,21 @@
                     @enderror()
                 </div>
 
+                <div class="form-group">
+                    <label for="category_id" class="form-label">Category</label>
+                    <select name="category_id" id="category_id" class="form-control">
+                        <option value="">Select Category</option>
+                        @foreach ($categories as $category )
+                        <option value="{{ $category->id }}"
+                            {{ $category->id == $post->category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('category_id')
+                    <br>
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror()
+                </div><br>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <a href="/posts" class="btn btn-success">Back</a>
             </form>
