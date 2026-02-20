@@ -24,7 +24,7 @@ class storePostRequest extends FormRequest
         return [
             'name' => 'required|max:255|min:5',
             'description' => 'required|max:255|min:5',
-            'category_id' => 'required'
+            'category_id' => 'required',
         ];
     }
 

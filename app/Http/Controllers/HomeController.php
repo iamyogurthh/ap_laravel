@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -15,7 +17,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data = Post::orderBy('id', 'desc')->get();
+        $user_id = Auth::user()->id;
+        $data = Post::where('user_id', $user_id)->orderBy('id', 'desc')->get();
         return view('home', compact('data'));
     }
 
@@ -34,6 +37,7 @@ class HomeController extends Controller
     public function store(storePostRequest $request)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id();
         Post::create($validated);
         return redirect('/posts');
     }
@@ -43,6 +47,7 @@ class HomeController extends Controller
      */
     public function show(Post $post)
     {
+        Gate::authorize('view', $post);
         return view('show', compact('post'));
     }
 
@@ -51,6 +56,7 @@ class HomeController extends Controller
      */
     public function edit(Post $post)
     {
+        Gate::authorize('view', $post);
         $categories = Category::all();
         return view('edit', compact('post', 'categories'));
     }
