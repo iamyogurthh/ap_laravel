@@ -6,6 +6,7 @@ use App\Http\Requests\storePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
 
 class HomeController extends Controller
 {

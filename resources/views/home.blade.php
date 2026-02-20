@@ -4,6 +4,7 @@
 <div class="container">
     <div>
         <a href="/posts/create" class="btn btn-success">New Post</a>
+        <a href="/logout" class="btn btn-success">Logout</a>
     </div><br>
     <div class="card">
         <h5 class="card-header" style="text-align: center;">Contents</h5>
@@ -21,7 +22,6 @@
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </div>
-
             </div>
             <hr>
             @endforeach
