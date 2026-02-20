@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\storePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -12,8 +13,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data = Post::all();
-        return view('home', compact($data));
+        $data = Post::orderBy('id', 'desc')->get();
+        return view('home', compact('data'));
     }
 
     /**
@@ -21,46 +22,61 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(storePostRequest $request)
     {
-        //
+
+        Post::create([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+
+        return redirect('/posts');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        //
+        dd($post->category->name);
+        return view('show', compact('post'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+
+        return view('edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(storePostRequest $request, Post $post)
     {
-        //
+
+        $post->update([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+
+        return redirect('/posts');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect('/posts');
     }
 }
