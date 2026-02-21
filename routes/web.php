@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::get('/', function () {
+    return resolve('test')->execute();
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\storePostRequest;
+use App\Mail\PostStored;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -17,8 +18,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user_id = Auth::user()->id;
-        $data = Post::where('user_id', $user_id)->orderBy('id', 'desc')->get();
+        $data = Post::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
         return view('home', compact('data'));
     }
 
@@ -37,9 +37,9 @@ class HomeController extends Controller
     public function store(storePostRequest $request)
     {
         $validated = $request->validated();
-        $validated['user_id'] = Auth::id();
+        $validated['user_id'] = Auth::user()->id;
         Post::create($validated);
-        return redirect('/posts');
+        return redirect('/posts')->with('status', config('test.message.created'));
     }
 
     /**
@@ -70,7 +70,7 @@ class HomeController extends Controller
         $validated = $request->validated();
         $post->update($validated);
 
-        return redirect('/posts');
+        return redirect('/posts')->with('status', config('test.message.updated'));
     }
 
     /**
@@ -79,6 +79,6 @@ class HomeController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect('/posts');
+        return redirect('/posts')->with('status', config('test.message.deleted'));
     }
 }

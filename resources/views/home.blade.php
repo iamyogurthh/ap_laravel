@@ -7,6 +7,15 @@
         <a href="/logout" class="btn btn-warning">Logout</a>
         <h4 style="float: right;">{{ Auth::user()->name }}</h4>
     </div><br>
+
+    @if (session('status'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> {{ session('status') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @endif
     <div class="card">
         <h5 class="card-header" style="text-align: center;">Contents</h5>
         <div class="card-body">
@@ -14,9 +23,10 @@
             <div>
                 <h5 class="card-title">{{ $post->name }}</h5>
                 <p class="card-text">{{ $post->description }}</p>
+                <div class="badge badge-pill badge-secondary">{{ $post->category->name }}</div><br><br>
                 <div class="form-row">
                     <a href="/posts/{{ $post->id }}" class="btn btn-primary">View</a>
-                    <a href="/posts/{{ $post->id }}/edit" class="btn btn-warning">Edit</a>
+                    <a href="/posts/{{ $post->id }}/edit" class="btn btn-warning" style="margin: 0px 10px">Edit</a>
                     <form action="/posts/{{ $post->id }}" method="post" style="display:inline-block">
                         @csrf
                         @method('DELETE')
