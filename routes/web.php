@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return resolve('test')->execute();
+    return view('welcome');
 });
+
 
 Route::middleware([
     'auth:sanctum',
